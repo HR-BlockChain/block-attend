@@ -25,7 +25,7 @@ contract InsurancePolicy {
     }
 
     function setPolicy() payable {
-        if (msg.value != 100) throw;
+        if (msg.value != 100) revert();
         var policy = PolicyData( now , now + 1 years, now + 30 days, 0, msg.value, 0 , 0 );
 
         Payment(msg.value);
@@ -57,7 +57,7 @@ contract InsurancePolicy {
     function claim() {
         var userPolicy = insurancePolicies[msg.sender];
 
-        if (userPolicy.nextPaymentTimestamp < now) throw;
+        if (userPolicy.nextPaymentTimestamp < now) revert();
         
         msg.sender.transfer(500);
 
