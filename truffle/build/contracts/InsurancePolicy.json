@@ -1,0 +1,209 @@
+{
+  "contract_name": "InsurancePolicy",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "totalClaimsPayout",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "payPremium",
+      "outputs": [],
+      "payable": true,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "insurancePolicies",
+      "outputs": [
+        {
+          "name": "startPolicy",
+          "type": "uint256"
+        },
+        {
+          "name": "endPolicy",
+          "type": "uint256"
+        },
+        {
+          "name": "nextPaymentTimestamp",
+          "type": "uint256"
+        },
+        {
+          "name": "currentBill",
+          "type": "uint256"
+        },
+        {
+          "name": "monthlyPremium",
+          "type": "uint256"
+        },
+        {
+          "name": "totalClaims",
+          "type": "uint256"
+        },
+        {
+          "name": "totalClaimsPayout",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "totalClaims",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "totalInsurancePolicies",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "claim",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "basePremium",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "setPolicy",
+      "outputs": [],
+      "payable": true,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "maxPayout",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "totalAmountInvested",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "payment",
+          "type": "uint256"
+        }
+      ],
+      "name": "Payment",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "claim",
+          "type": "uint256"
+        }
+      ],
+      "name": "Claimed",
+      "type": "event"
+    }
+  ],
+  "unlinked_binary": "0x6060604052341561000f57600080fd5b5b6105808061001f6000396000f300606060405236156100a15763ffffffff7c0100000000000000000000000000000000000000000000000000000000600035041663046cd2d281146100a657806329c08ba2146100cb5780633b291c01146100d557806341c613831461013f57806347bedcfd146101645780634e71d92d14610189578063a5bd79821461019e578063b75baa60146101c3578063e0176de8146101cd578063f6724a55146101f2575b600080fd5b34156100b157600080fd5b6100b9610217565b60405190815260200160405180910390f35b6100d361021d565b005b34156100e057600080fd5b61010173ffffffffffffffffffffffffffffffffffffffff600435166102b5565b60405196875260208701959095526040808701949094526060860192909252608085015260a084015260c083019190915260e0909101905180910390f35b341561014a57600080fd5b6100b96102f7565b60405190815260200160405180910390f35b341561016f57600080fd5b6100b96102fd565b60405190815260200160405180910390f35b341561019457600080fd5b6100d3610303565b005b34156101a957600080fd5b6100b96103ee565b60405190815260200160405180910390f35b6100d36103f4565b005b34156101d857600080fd5b6100b961050a565b60405190815260200160405180910390f35b34156101fd57600080fd5b6100b9610510565b60405190815260200160405180910390f35b60035481565b73ffffffffffffffffffffffffffffffffffffffff331660009081526006602052604090819020907fd73298c59e2f8823f5313441b46ced5bddf204a2d4d72bdd904a6d6785e51ae99034905190815260200160405180910390a160038101805434900390819055600090116102a95760028101805462278d0001905560038101805460048301540190555b60018054340190555b50565b60066020528060005260406000206000915090508060000154908060010154908060020154908060030154908060040154908060050154908060060154905087565b60025481565b60005481565b73ffffffffffffffffffffffffffffffffffffffff3316600090815260066020526040902060028101544290101561033a57600080fd5b73ffffffffffffffffffffffffffffffffffffffff331660006101f4604051600060405180830381858888f19350505050151561037657600080fd5b7f7a355715549cfe7c1cba26304350343fbddc4b4f72d3ce3e7c27117dd20b5cb86101f460405190815260200160405180910390a160058101805460019081019091556006820180546101f4908101909155600380840180546032019055609660048501556002805490930190925581540190555b50565b60045481565b6103fc610516565b6064341461040957600080fd5b60e060405190810160405280428152602001426301e133800181526020014262278d000181526020016000815260200134815260200160008152602001600081525090507fd73298c59e2f8823f5313441b46ced5bddf204a2d4d72bdd904a6d6785e51ae93460405190815260200160405180910390a173ffffffffffffffffffffffffffffffffffffffff331660009081526006602052604090208190815181556020820151816001015560408201518160020155606082015181600301556080820151816004015560a0820151816005015560c08201516006909101555060008054600190810190915580543401905560646004556101f46005555b50565b60055481565b60015481565b60e0604051908101604052806000815260200160008152602001600081526020016000815260200160008152602001600081526020016000815250905600a165627a7a7230582060f41211b32854be5801d7d7e60787d5da3f2bb62386685d94dc33be40cb3ffd0029",
+  "networks": {
+    "1501987463733": {
+      "events": {
+        "0xd73298c59e2f8823f5313441b46ced5bddf204a2d4d72bdd904a6d6785e51ae9": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "payment",
+              "type": "uint256"
+            }
+          ],
+          "name": "Payment",
+          "type": "event"
+        },
+        "0x7a355715549cfe7c1cba26304350343fbddc4b4f72d3ce3e7c27117dd20b5cb8": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "claim",
+              "type": "uint256"
+            }
+          ],
+          "name": "Claimed",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x2119620c9051e68379f6f2fc837f3f6996f35b85",
+      "updated_at": 1501987485191
+    }
+  },
+  "schema_version": "0.0.5",
+  "updated_at": 1501987485191
+}
