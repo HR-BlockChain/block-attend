@@ -54,7 +54,7 @@ contract InsurancePolicy {
         totalAmountInvested = totalAmountInvested + msg.value;
     }
 
-    function claim() {
+    function claim() payable {
         var userPolicy = insurancePolicies[msg.sender];
 
         if (userPolicy.nextPaymentTimestamp < now) revert();
@@ -71,6 +71,28 @@ contract InsurancePolicy {
         totalClaims = totalClaims + 1;
         totalClaimsPayout = totalClaimsPayout + 500;
 
+    }
+
+    function getNextPaymentDate() constant returns(uint) {
+        var userPolicy = insurancePolicies[msg.sender];
+        return userPolicy.nextPaymentTimestamp;
+    }
+
+    function getCurrentBill() constant returns (uint) {
+        var userPolicy = insurancePolicies[msg.sender];
+        return userPolicy.currentBill;
+    }
+
+    function getTotalAmountInvested() constant returns (uint){
+        return totalAmountInvested;
+    }
+    
+    function getTotalClaims() constant returns (uint){
+        return totalClaims;
+    }
+
+    function getTotalClaimsPayout() constant returns (uint){
+        return totalClaimsPayout;
     }
 
 }
