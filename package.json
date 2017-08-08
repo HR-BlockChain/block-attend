@@ -7,7 +7,7 @@
     "react-dev": "webpack -d --watch",
     "server-dev": "nodemon server/index.js"
   },
-  "author": "Albert and co",
+  "author": "JY and AK",
   "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.23.1",
@@ -18,6 +18,8 @@
   },
   "dependencies": {
     "angular": "^1.6.3",
+    "axios": "^0.16.2",
+    "bluebird": "^3.5.0",
     "body-parser": "^1.17.2",
     "ethereumjs-testrpc": "^4.0.1",
     "express": "^4.15.0",
@@ -26,6 +28,7 @@
     "mysql": "^2.13.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
-    "truffle": "^3.4.7"
+    "truffle": "^3.4.7",
+    "web3": "^1.0.0-beta.15"
   }
 }
