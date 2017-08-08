@@ -1,27 +1,41 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-// UNCOMMENT THE DATABASE YOU'D LIKE TO USE
+var Promise = require('bluebird');
+var Web3 = require('web3');
 // var items = require('../database-mysql');
-// var items = require('../database-mongo');
-
 var app = express();
 
-// UNCOMMENT FOR REACT
+var web3 = new Web3();
+web3.setProvider(new web3.providers.HttpProvider("http://127.0.0.1:8545"));
+
 app.use(express.static(__dirname + '/../react-client/dist'));
 
-// UNCOMMENT FOR ANGULAR
-// app.use(express.static(__dirname + '/../angular-client'));
-// app.use(express.static(__dirname + '/../node_modules'));
-
-app.get('/items', function (req, res) {
-  items.selectAll(function(err, data) {
-    if(err) {
-      res.sendStatus(500);
+app.get('/accounts', (req, res) => {
+  web3.eth.getAccounts((err, acc) => {
+    if (err) {
+      throw err;
     } else {
-      res.json(data);
+      var data = [];
+      acc.forEach((item, index) => {
+        var obj = {};
+        var bal;
+        obj['account'] = item;
+        web3.eth.getBalance(item, 'latest', (err, bal) => {
+          if (err) {
+            throw err;
+          } else {
+            obj['balance'] = bal;
+            data.push(obj);
+            if (data.length === acc.length) {
+              res.json(data);
+            }
+          }
+        })
+      })
     }
-  });
+  })
 });
+
 
 app.listen(3000, function() {
   console.log('listening on port 3000!');
