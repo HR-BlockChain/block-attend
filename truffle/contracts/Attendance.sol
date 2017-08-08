@@ -75,6 +75,7 @@ contract Attendance {
         for (uint i = 0; i < totalAttendees; i++){
             if (currentEvent.attendance[i] == true){
                 // transfer payout to attendees[i] 
+                currentEvent.attendees[i].transfer(payout);
             }
         }
 
@@ -89,6 +90,7 @@ contract Attendance {
 
 
 // GOALS
-
+// verify ethereum transfers (ins / out)
+// figure out payment 
 //  page to view event / stats
 //  verifying attendee page
