@@ -39,16 +39,23 @@ contract InsurancePolicy {
     }
 
     function payPremium() payable {
-        
         var userPolicy = insurancePolicies[msg.sender];
 
+        if (userPolicy.nextPaymentTimestamp == 0) revert();
+
+        if (now > userPolicy.endPolicy) revert();
+        
         Payment(msg.value);
 
         userPolicy.currentBill = userPolicy.currentBill - msg.value;
 
-        if (userPolicy.currentBill <= 0){
+        if (userPolicy.currentBill <= 0 && userPolicy.nextPaymentTimestamp != userPolicy.endPolicy){
             userPolicy.nextPaymentTimestamp = userPolicy.nextPaymentTimestamp + 30 days;
-            userPolicy.currentBill = userPolicy.monthlyPremium + userPolicy.currentBill;
+            userPolicy.currentBill = userPolicy.monthlyPremium; 
+        }
+        
+        if (userPolicy.nextPaymentTimestamp >= userPolicy.endPolicy){
+            userPolicy.nextPaymentTimestamp = userPolicy.endPolicy;
         }
 
         totalAmountInvested = totalAmountInvested + msg.value;
@@ -57,7 +64,11 @@ contract InsurancePolicy {
     function claim() payable {
         var userPolicy = insurancePolicies[msg.sender];
 
-        if (userPolicy.nextPaymentTimestamp < now) revert();
+        if (userPolicy.nextPaymentTimestamp == 0) revert();
+
+        if (now > userPolicy.endPolicy) revert();
+
+        if (now > userPolicy.nextPaymentTimestamp) revert();
         
         msg.sender.transfer(500);
 
@@ -73,7 +84,46 @@ contract InsurancePolicy {
 
     }
 
-    function getNextPaymentDate() constant returns(uint) {
+    // funcs to grab Insurance Policy Info
+
+    function getAllInsurancePolicies() {     
+        // fix
+    }
+
+    function getTotalInsurancePolicies() constant returns (uint) {
+        return totalInsurancePolicies;
+    }
+
+    function getTotalAmountInvested() constant returns (uint) {
+        return totalAmountInvested;
+    }
+    
+    function getTotalClaims() constant returns (uint) {
+        return totalClaims;
+    }
+
+    function getTotalClaimsPayout() constant returns (uint){
+        return totalClaimsPayout;
+    }
+
+    // func to grab individuals policy info
+
+    function getCurrentPolicy() constant returns (uint, uint, uint, uint, uint, uint, uint) {        
+        var userPolicy = insurancePolicies[msg.sender]; 
+        return (userPolicy.startPolicy, userPolicy.endPolicy, userPolicy.nextPaymentTimestamp, userPolicy.currentBill, userPolicy.monthlyPremium, userPolicy.totalClaims, userPolicy.totalClaimsPayout );
+    }
+
+    function getStartPolicyDate() constant returns (uint) {
+        var userPolicy = insurancePolicies[msg.sender];
+        return userPolicy.startPolicy;
+    }
+
+    function getPolicyEndDate() constant returns (uint) {
+        var userPolicy = insurancePolicies[msg.sender];
+        return userPolicy.endPolicy;
+    }
+
+    function getNextPaymentDate() constant returns (uint) {
         var userPolicy = insurancePolicies[msg.sender];
         return userPolicy.nextPaymentTimestamp;
     }
@@ -83,16 +133,20 @@ contract InsurancePolicy {
         return userPolicy.currentBill;
     }
 
-    function getTotalAmountInvested() constant returns (uint){
-        return totalAmountInvested;
-    }
-    
-    function getTotalClaims() constant returns (uint){
-        return totalClaims;
+    function getMonthlyPremium() constant returns (uint) {
+        var userPolicy = insurancePolicies[msg.sender];
+        return userPolicy.monthlyPremium;
     }
 
-    function getTotalClaimsPayout() constant returns (uint){
-        return totalClaimsPayout;
+    function getUserTotalClaims() constant returns (uint) {
+        var userPolicy = insurancePolicies[msg.sender];
+        return userPolicy.totalClaims;
+    }
+
+    function getUserTotalClaimsPayout() constant returns (uint) {
+        var userPolicy = insurancePolicies[msg.sender];
+        return userPolicy.totalClaimsPayout;
     }
 
 }
+
