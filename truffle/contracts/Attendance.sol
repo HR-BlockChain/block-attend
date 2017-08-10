@@ -13,25 +13,31 @@ contract Attendance {
         string eventLocation;
         uint eventDate;
         uint eventCreationDate;
-        uint totalAttendees;
+        address createdBy;
         uint contributionAmount;
         uint contributionPool;
+        uint totalAttendees;
         address[] attendees;
-        bool[] attendance;
-        uint actualAttendees;
+        address[] actualAttendees;
+        uint actualTotalAttendees;
     }
 
-    // initial Events
-    function createEvent(string eventName, string eventLocation, uint eventDate, uint contributionAmount ) {
+    function createEvent(string eventName, string eventLocation, uint eventDate ) payable {
         
         events[eventName].eventLocation = eventLocation;
         events[eventName].eventDate = eventDate;
         events[eventName].eventCreationDate = now;
-        events[eventName].contributionAmount = contributionAmount;
+        events[eventName].createdBy = msg.sender;
+        events[eventName].contributionAmount = msg.value;
+        events[eventName].contributionPool = msg.value;
+        events[eventName].totalAttendees = 1;
+        events[eventName].attendees.push(msg.sender);
+
+        totalEvents = totalEvents + 1;
+        totalAttendees = totalAttendees + 1;
 
     }
 
-    // Commit to joining event
     function joinEvent(string eventName) payable {
 
         var currentEvent = events[eventName];
@@ -39,7 +45,6 @@ contract Attendance {
         if (currentEvent.contributionAmount != msg.value) revert();
 
         currentEvent.attendees.push(msg.sender);
-        currentEvent.attendance.push(false);
         currentEvent.totalAttendees = currentEvent.totalAttendees + 1;
         currentEvent.contributionPool = currentEvent.contributionPool + msg.value;
 
@@ -47,50 +52,48 @@ contract Attendance {
     }
 
     // Current User must mark Event as attended . Trust System
-    // more Ether as more attendees
-    // need to Optimize
+
     function markAttended(string eventName) {
         // Set up GPS tracker
 
         var currentEvent = events[eventName];
-        for (uint i = 0; i < totalAttendees; i++){
-         if (currentEvent.attendees[i] == msg.sender){
-                currentEvent.attendance[i] = true;
-          }
-        }
-        currentEvent.actualAttendees = currentEvent.actualAttendees + 1;
+
+        currentEvent.actualAttendees.push(msg.sender);
+        currentEvent.actualTotalAttendees = currentEvent.actualTotalAttendees + 1;
 
         totalActualAttendees = totalActualAttendees + 1;
     }
 
     // payout after 24hrs after event;
+    // more attendees, more gas used
+    
     function payOut (string eventName) payable {
 
         var currentEvent = events[eventName];
 
         if (currentEvent.eventDate < now + 24 hours) revert();
 
-        var payout = currentEvent.contributionPool / currentEvent.actualAttendees;
+        var payout = currentEvent.contributionPool / currentEvent.actualTotalAttendees;
 
-        for (uint i = 0; i < totalAttendees; i++){
-            if (currentEvent.attendance[i] == true){
-                // transfer payout to attendees[i] 
-                currentEvent.attendees[i].transfer(payout);
-            }
+        for (uint i = 0; i < currentEvent.actualTotalAttendees; i++){
+            currentEvent.actualAttendees[i].transfer(payout);
         }
 
     }
 
-     function viewEvent(string eventName) constant returns(string, uint, uint, uint, uint, uint, address[], bool[], uint){
+     function viewEvent(string eventName) constant returns(string, uint, uint, address, uint, uint, uint, address[], address[], uint){
        var currentEvent = events[eventName];
-        return (currentEvent.eventLocation, currentEvent.eventDate, currentEvent.eventCreationDate, currentEvent.totalAttendees, currentEvent.contributionAmount, currentEvent.contributionPool, currentEvent.attendees, currentEvent.attendance, currentEvent.actualAttendees);
+        return (currentEvent.eventLocation, currentEvent.eventDate, currentEvent.eventCreationDate, currentEvent.createdBy, currentEvent.contributionAmount, currentEvent.contributionPool, currentEvent.totalAttendees, currentEvent.attendees, currentEvent.actualAttendees, currentEvent.actualTotalAttendees );
      }
 }
 
 
 
 // GOALS
-// verify ethereum transfers (ins / out)
-// figure out payment 
-//  page to view event / stats
-//  verifying attendee page
+//  verify ethereum transfers (ins / out)
+
+//  Reading the blockchain log 
+//      handling 'events'
+
+// Login / Acct # 
+// setup Admin
